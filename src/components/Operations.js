@@ -1,15 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AuthService from "../services/auth.service";
+import OperationsService from "../services/operations.service";
+import Toast from 'react-bootstrap/Toast';
 
 const Operations = () => {
+  const [balance, setBalance] = useState(0);
+  const [operation, setOperation] = useState(false);
+  const [result, setResult] = useState(false);
+  const [show, setShow] = useState(false);
   const [valueA, setValueA] = useState(0);
   const [valueB, setValueB] = useState(0);
   const [value, setValue] = useState(0);
   const [size, setSize] = useState(0);
 
+  useEffect(() => {
+    OperationsService.getBalanceByUser(currentUser.id, currentUser.token).then(
+      (response) => {
+        setBalance(response.data);
+      }
+    );
+  }, []);
+
   const currentUser = AuthService.getCurrentUser();
   const callAPI = (e) => {
+    let operationId = 0;
+    let type = "NUMBER";
+    let number1 = valueA;
+    if (e === 'ADDITION') {
+      operationId = 1;
     }
+    if (e === 'SUBTRACTION') {
+      operationId = 2;
+    }
+    if (e === 'MULTIPLICATION') {
+      operationId = 3;
+    }
+    if (e === 'DIVISION') {
+      operationId = 4;
+    }
+    if (e === 'SQUARE ROOT') {
+      number1 = value;
+      operationId = 5;
+    }
+    if (e === 'RANDOM STRING') {
+      operationId = 6;
+      type = "STRING";
+    }
+    OperationsService.mathOperations(number1, valueB, size, operationId, type, currentUser.id, currentUser.token).then(
+      (response) => {
+        setShow(true);
+        setOperation(e);
+        setResult('ERROR');
+        if(response.data){
+          const values = response.data;
+          if(values.code === 200){
+            setResult(values.data);
+            setBalance(values.balance);
+          } 
+        }
+      }
+    );
+
+  }
 
   return (
     <div className="container">
@@ -17,41 +69,53 @@ const Operations = () => {
         <h3>
           Arithmetic Operations
         </h3>
+        <h4>User's Balance: </h4>
+        ${balance}
       </header>
-      <p hidden='true'>
+      <p hidden={true}>
         {currentUser.id}
       </p>
-      <p hidden='true'>
+      <p hidden={true}>
         {currentUser.token}
       </p>
-      <table cellpadding="35px">
-        <tr>
-          <th scope="col">Basic Arithmetic Operations</th>
-          <th scope="col">Advance Arithmetic Operations</th>
-          <th scope="col">External String Generator</th>
-        </tr>
-        <tr className="myForm">
-          <td bgcolor='#50b1e4'>
-            <p><h4>VALUE A :</h4> <input value={valueA}></input></p>
-            <p><h4>VALUE B: </h4> <input value={valueB}></input></p>
-            <p>
-              <button onClick={()=>callAPI()}>ADD (+)</button>
-              <button>SUB (-)</button>
-              <button>MUL (x)</button>
-              <button>DIV (/)</button></p>
-          </td>
-          <td bgcolor='#dee450'>
-            <p><h4>VALUE:</h4> <input></input></p>
-            <p><button>SQUARE ROOT</button></p>
-          </td>
-          <td bgcolor='#009157'>
-            <p><h4>STRING SIZE: </h4> <input></input></p>
-            <p><button>GENERATE</button></p>
-          </td>
-        </tr>
-      </table>
-      
+      <table cellPadding="35px">
+        <thead>
+          <tr>
+            <th scope="col">Basic Arithmetic Operations</th>
+            <th scope="col">Advance Arithmetic Operations</th>
+            <th scope="col">External String Generator</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="myForm">
+            <td bgcolor='#50b1e4'>
+              <p>VALUE A: <input value={valueA} onChange={e => setValueA(e.target.value)}></input></p>
+              <p>VALUE B:  <input value={valueB} onChange={e => setValueB(e.target.value)}></input></p>
+              <p>
+                <button onClick={() => callAPI('ADDITION')}>ADD (+)</button>
+                <button onClick={() => callAPI('SUBTRACTION')}>SUB (-)</button>
+                <button onClick={() => callAPI('MULTIPLICATION')}>MUL (x)</button>
+                <button onClick={() => callAPI('DIVISION')}>DIV (/)</button></p>
+            </td>
+            <td bgcolor='#dee450'>
+              <p>VALUE: <input value={value} onChange={e => setValue(e.target.value)}></input></p>
+              <p><button onClick={() => callAPI('SQUARE ROOT')}>SQUARE ROOT</button></p>
+            </td>
+            <td bgcolor='#009157'>
+              <p>STRING SIZE: <input value={size} onChange={e => setSize(e.target.value)}></input></p>
+              <p><button onClick={() => callAPI('RANDOM STRING')}>GENERATE</button></p>
+            </td>
+          </tr>
+        </tbody>
 
+      </table>
+      <Toast onClose={() => setShow(false)} show={show} delay={2000} autohide>
+        <Toast.Header closeButton={false}>
+          <strong className="me-auto">Result</strong>
+          <small className="me-auto">{operation}</small>
+        </Toast.Header>
+        <Toast.Body>{result}</Toast.Body>
+      </Toast>
 
     </div>
   );

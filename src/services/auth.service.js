@@ -2,14 +2,6 @@ import axios from "axios";
 
 const API_URL = "http://truenortharithmeticback-env.eba-i9aufhm8.us-east-1.elasticbeanstalk.com/truenorth/api/v1/auth/";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
-    email,
-    password,
-  });
-};
-
 const login = (username, password) => {
   const params = JSON.stringify({ username: username, password: password });
   let axiosConfig = {
@@ -21,8 +13,6 @@ const login = (username, password) => {
   return axios
     .post(API_URL + "signin", params, axiosConfig)
     .then((response) => {
-      console.log('-------response: ');
-      console.log(response);
       if (response.data.username) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
@@ -33,9 +23,6 @@ const login = (username, password) => {
 
 const logout = () => {
   localStorage.removeItem("user");
-  return axios.post(API_URL + "signout").then((response) => {
-    return response.data;
-  });
 };
 
 const getCurrentUser = () => {
@@ -43,7 +30,6 @@ const getCurrentUser = () => {
 };
 
 const AuthService = {
-  register,
   login,
   logout,
   getCurrentUser,

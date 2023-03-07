@@ -5,7 +5,6 @@ import './App.css';
 import AuthService from "./services/auth.service";
 
 import Login from "./components/Login";
-import Register from "./components/Register";
 import Home from "./components/Home";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
@@ -103,12 +102,6 @@ const App = () => {
                 Login
               </Link>
             </li>
-
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
           </div>
         )}
       </nav>
@@ -118,7 +111,6 @@ const App = () => {
           <Route exact path={"/"} element={<Home />} />
           <Route exact path={"/home"} element={<Home />} />
           <Route exact path="/login" element={<Login />} />
-          <Route exact path="/register" element={<Register />} />
           <Route exact path="/operations" element={<Operations />} />
           <Route path="/user" element={<BoardUser />} />
           <Route path="/mod" element={<BoardModerator />} />
