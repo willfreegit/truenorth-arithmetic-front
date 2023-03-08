@@ -39,6 +39,16 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## How to test
+![Screenshot from 2023-03-08 11-30-25](https://user-images.githubusercontent.com/92070553/223773319-8718c7f4-550c-4e24-befc-d137e6b5a9c4.png)
 
+There are 3 test users will@hotmail.com, abc@gmail.com and test@yahoo.es. The password is ******* (the credentials will be send vial mail).
 
+Into the app you can logout in any form.
+
+There are 2 Main tabs: Operations and Records
+![Screenshot from 2023-03-08 11-33-46](https://user-images.githubusercontent.com/92070553/223774043-13e9607d-354e-4103-99db-0728bafc2f70.png)
+
+![Screenshot from 2023-03-08 11-34-26](https://user-images.githubusercontent.com/92070553/223774168-96d79176-1440-47c5-be05-eba0cb59f0ee.png)
+
+You can test all the challenge features and functionalities.
