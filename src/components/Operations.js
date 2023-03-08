@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AuthService from "../services/auth.service";
 import OperationsService from "../services/operations.service";
 import Toast from 'react-bootstrap/Toast';
+import TemporalParse from "../util/TemporalParse";
 
 const Operations = () => {
   const [balance, setBalance] = useState(0);
@@ -24,29 +25,10 @@ const Operations = () => {
   const currentUser = AuthService.getCurrentUser();
   const callAPI = (e) => {
     let operationId = 0;
-    let type = "NUMBER";
-    let number1 = valueA;
-    if (e === 'ADDITION') {
-      operationId = 1;
-    }
-    if (e === 'SUBTRACTION') {
-      operationId = 2;
-    }
-    if (e === 'MULTIPLICATION') {
-      operationId = 3;
-    }
-    if (e === 'DIVISION') {
-      operationId = 4;
-    }
-    if (e === 'SQUARE ROOT') {
-      number1 = value;
-      operationId = 5;
-    }
-    if (e === 'RANDOM STRING') {
-      operationId = 6;
-      type = "STRING";
-    }
-    OperationsService.mathOperations(number1, valueB, size, operationId, type, currentUser.id, currentUser.token).then(
+    operationId = TemporalParse.parseNameToCode(e);
+    OperationsService.mathOperations(operationId === 6 ? value : valueA, 
+      valueB, size, operationId, operationId === 6 ? "STRING" : "NUMBER", 
+      currentUser.id, currentUser.token).then(
       (response) => {
         setShow(true);
         setOperation(e);

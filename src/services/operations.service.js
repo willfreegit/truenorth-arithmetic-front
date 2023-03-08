@@ -38,10 +38,28 @@ const mathOperations = (number1, number2, stringSize, operationId, type, userId,
     });
 };
 
+const getRecords = (page, size, filters, userId, token) => {
+  const params = JSON.stringify({ page: page, size: size, filters: filters, userId: userId });
+  let axiosConfig = {
+    headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        "Access-Control-Allow-Origin": "*",
+        'Authorization': `Bearer ${token}`
+    }
+  };
+  return axios
+    .get(API_URL + "getRecordsByUser", params, axiosConfig)
+    .then((response) => {
+      console.log('RESPONSE BALANCE----');
+      console.log(response);
+      return response;
+    });
+};
 
 const OperationsService = {
   mathOperations,
-  getBalanceByUser
+  getBalanceByUser,
+  getRecords
 }
 
 export default OperationsService;
