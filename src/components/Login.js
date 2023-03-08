@@ -7,6 +7,10 @@ import { isEmail } from "validator";
 
 import AuthService from "../services/auth.service";
 
+/**
+ * @author wmonge - 03/2023
+ * @returns 
+ */
 const required = (value) => {
   if (!value) {
     return (

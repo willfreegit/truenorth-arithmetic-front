@@ -1,7 +1,12 @@
 import axios from "axios";
+import * as Constants from "../util/Constants";
 
-const API_URL = "http://truenortharithmeticback-env.eba-i9aufhm8.us-east-1.elasticbeanstalk.com/truenorth/api/v1/operations/";
+const API_URL = Constants.URLBASE_V1 + "operations/";
 
+/**
+ * @author wmonge - 03/2023
+ * @returns 
+ */
 const getBalanceByUser = (userId, token) => {
   let axiosConfig = {
     headers: {

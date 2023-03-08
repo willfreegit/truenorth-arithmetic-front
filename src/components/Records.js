@@ -4,6 +4,10 @@ import AuthService from "../services/auth.service";
 import RecordsService from "../services/records.service";
 import TemporalParse from "../util/TemporalParse";
 
+/**
+ * @author wmonge - 03/2023
+ * @returns 
+ */
 const columnsInit = [
   {
     label: 'Operation',
@@ -34,13 +38,30 @@ const columnsInit = [
     field: 'dateOperation',
     sort: 'asc',
     width: 150
+  },
+  {
+    label: 'Action',
+    field: 'deleteButton',
+    sort: 'asc',
+    width: 150
   }
 ];
 
 const Records = () => {
   const [data, setData] = useState({columns: columnsInit, rows: []});
   const currentUser = AuthService.getCurrentUser();
-  useEffect(() => {
+
+  const deleteRecord = (e) =>{
+    RecordsService.deleteRecord(e, currentUser.token).then(
+      (response) => {
+        if(response){
+          loadRecords();
+        }
+      }
+    );
+  }
+
+  const loadRecords = () =>{
     const page = 0;
     const size = 1000;
     const filters = null;
@@ -52,12 +73,17 @@ const Records = () => {
           array = response.data.records;
           for(const x of array){
             x.operation = TemporalParse.parseCodeToName(x.operationId);
+            x.deleteButton = <button className="btn btn-primary" onClick={() => deleteRecord(x.id)}>Delete</button>;
             newArray.push(x);
           }
           setData({columns: columnsInit, rows:newArray});
         }
       }
     );
+  }
+
+  useEffect(() => {
+    loadRecords();
   }, []);
 
   return (

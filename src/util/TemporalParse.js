@@ -1,3 +1,7 @@
+/**
+ * @author wmonge - 03/2023
+ * @returns 
+ */
 const parseNameToCode = (name) =>{
     if(name === 'ADDITION'){
         return 1;

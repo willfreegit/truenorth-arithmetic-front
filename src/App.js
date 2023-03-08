@@ -11,6 +11,10 @@ import Records from "./components/Records";
 import EventBus from "./common/EventBus";
 import Operations from "./components/Operations";
 
+/**
+ * @author wmonge - 03/2023
+ * @returns 
+ */
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
 

@@ -4,6 +4,10 @@ import OperationsService from "../services/operations.service";
 import Toast from 'react-bootstrap/Toast';
 import TemporalParse from "../util/TemporalParse";
 
+/**
+ * @author wmonge - 03/2023
+ * @returns 
+ */
 const Operations = () => {
   const [balance, setBalance] = useState(0);
   const [operation, setOperation] = useState(false);
