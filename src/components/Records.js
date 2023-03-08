@@ -73,7 +73,8 @@ const Records = () => {
           array = response.data.records;
           for(const x of array){
             x.operation = TemporalParse.parseCodeToName(x.operationId);
-            x.deleteButton = <button className="btn btn-primary" onClick={() => deleteRecord(x.id)}>Delete</button>;
+            x.deleteButton = <button className="btn btn-primary" 
+                                     onClick={() => {if (window.confirm('Are you sure you wish to delete this item?')) deleteRecord(x.id)}}>Delete</button>;
             newArray.push(x);
           }
           setData({columns: columnsInit, rows:newArray});

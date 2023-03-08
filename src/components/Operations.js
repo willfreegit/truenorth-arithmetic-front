@@ -30,23 +30,22 @@ const Operations = () => {
   const callAPI = (e) => {
     let operationId = 0;
     operationId = TemporalParse.parseNameToCode(e);
-    OperationsService.mathOperations(operationId === 6 ? value : valueA, 
-      valueB, size, operationId, operationId === 6 ? "STRING" : "NUMBER", 
+    OperationsService.mathOperations(operationId === 5 ? value : valueA,
+      valueB, size, operationId, operationId === 6 ? "STRING" : "NUMBER",
       currentUser.id, currentUser.token).then(
-      (response) => {
-        setShow(true);
-        setOperation(e);
-        setResult('ERROR');
-        if(response.data){
-          const values = response.data;
-          if(values.code === 200){
-            setResult(values.data);
-            setBalance(values.balance);
-          } 
+        (response) => {
+          setShow(true);
+          setOperation(e);
+          setResult('ERROR: THE STRING SIZE MUST TO BE BETWEEN 1 AND 20');
+          if (response.data) {
+            const values = response.data;
+            if (values.code === 200) {
+              setResult(values.data);
+              setBalance(values.balance);
+            }
+          }
         }
-      }
-    );
-
+      );
   }
 
   return (
@@ -75,8 +74,24 @@ const Operations = () => {
         <tbody>
           <tr className="myForm">
             <td bgcolor='#50b1e4'>
-              <p>VALUE A: <input value={valueA} onChange={e => setValueA(e.target.value)}></input></p>
-              <p>VALUE B:  <input value={valueB} onChange={e => setValueB(e.target.value)}></input></p>
+              <p>VALUE A: <input value={valueA}
+                maxLength={5}
+                onChange={e => setValueA(e.target.value)}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              ></input></p>
+              <p>VALUE B:  <input value={valueB}
+                maxLength={5}
+                onChange={e => setValueB(e.target.value)}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              ></input></p>
               <p>
                 <button onClick={() => callAPI('ADDITION')}>ADD (+)</button>
                 <button onClick={() => callAPI('SUBTRACTION')}>SUB (-)</button>
@@ -84,18 +99,34 @@ const Operations = () => {
                 <button onClick={() => callAPI('DIVISION')}>DIV (/)</button></p>
             </td>
             <td bgcolor='#dee450'>
-              <p>VALUE: <input value={value} onChange={e => setValue(e.target.value)}></input></p>
+              <p>VALUE: <input value={value}
+                maxLength={5}
+                onChange={e => setValue(e.target.value)}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              ></input></p>
               <p><button onClick={() => callAPI('SQUARE ROOT')}>SQUARE ROOT</button></p>
             </td>
             <td bgcolor='#009157'>
-              <p>STRING SIZE: <input value={size} onChange={e => setSize(e.target.value)}></input></p>
+              <p>STRING SIZE: <input value={size}
+                maxLength={2}
+                onChange={e => setSize(e.target.value)}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+              ></input></p>
               <p><button onClick={() => callAPI('RANDOM STRING')}>GENERATE</button></p>
             </td>
           </tr>
         </tbody>
 
       </table>
-      <Toast onClose={() => setShow(false)} show={show} delay={2000} autohide>
+      <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
         <Toast.Header closeButton={false}>
           <strong className="me-auto">Result</strong>
           <small className="me-auto">{operation}</small>
